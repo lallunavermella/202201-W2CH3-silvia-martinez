@@ -21,22 +21,26 @@ function calculateSquareRoot(arrayNumber) {
 }
 
 function mathsOperations(arrayNums) {
-  let sumNum = arrayNums[0] + arrayNums[1];
-  let restNum = arrayNums[0] - arrayNums[1];
-  let multiplyNum = arrayNums[0] * arrayNums[1];
-  let divideNum = arrayNums[0] / arrayNums[1];
+  let sumNum = parseFloat(arrayNums[0] + arrayNums[1], 10);
+
+  let restNum = parseFloat(arrayNums[0] - arrayNums[1], 10);
+
+  let multiplyNum = parseFloat(arrayNums[0] * arrayNums[1], 10);
+
+  let divideNum = parseFloat(arrayNums[0] / arrayNums[1], 10);
   if (!Number.isInteger(sumNum)) {
-    sumNum = sumNum.toFixed(3);
+    sumNum = parseFloat(sumNum.toFixed(3));
   }
   if (!Number.isInteger(restNum)) {
-    restNum = restNum.toFixed(3);
+    restNum = parseFloat(restNum.toFixed(3));
   }
   if (!Number.isInteger(multiplyNum)) {
-    multiplyNum = multiplyNum.toFixed(3);
+    multiplyNum = parseFloat(multiplyNum.toFixed(3));
   }
   if (!Number.isInteger(divideNum)) {
-    divideNum = divideNum.toFixed(3);
+    divideNum = parseFloat(divideNum.toFixed(3));
   }
+
   return [sumNum, restNum, multiplyNum, divideNum];
 }
 
