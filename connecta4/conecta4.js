@@ -29,7 +29,6 @@ window.addEventListener("load", () => {
     },
   ];
 
-  let currentPlayer;
   const playerCPU = [
     {
       player: 1,
@@ -42,7 +41,7 @@ window.addEventListener("load", () => {
   ];
 
   function changePlayer(player, objPlayer) {
-    if (player === objPlayer[0]) {
+    if (players === objPlayer[0]) {
       player = objPlayer[1];
     } else if (player === objPlayer[1]) {
       player = objPlayer[0];
@@ -51,16 +50,16 @@ window.addEventListener("load", () => {
     return player;
   }
 
-  function comprovar4enColumna(taulell, player, objJugador, column) {
+  function comprovar4enColumna(taulell, player, objJugador, columna) {
     let count = 0;
     if (player === objJugador[0]) {
       for (let i = 0; i < taulell.length; i++) {
-        if (taulell[i][column] === "X") {
+        if (taulell[i][columna] === "X") {
           count += 1;
           if (count === 4) {
             return true;
           }
-        } else if (taulell[i][column] !== "X") {
+        } else if (taulell[i][columna] !== "X") {
           count = 0;
         }
       }
@@ -68,17 +67,18 @@ window.addEventListener("load", () => {
     }
     if (player === objJugador[1]) {
       for (let i = 0; i < taulell.length; i++) {
-        if (taulell[i][column] === "Y") {
+        if (taulell[i][columna] === "Y") {
           count += 1;
           if (count === 4) {
             return true;
           }
-        } else if (taulell[i][column] !== "Y") {
+        } else if (taulell[i][columna] !== "Y") {
           count = 0;
         }
       }
       return false;
     }
+    return true;
   }
 
   function chooseSheetPlayer(player, objJugador) {
@@ -92,9 +92,9 @@ window.addEventListener("load", () => {
     column = (forat - 1) % (taulell.length + 1);
     return column;
   }
-  function getFila(taulell, column) {
+  function getFila(taulell, columna) {
     for (let i = 0; i < taulell.length; i++) {
-      if (taulell[i][column] === "X" || taulell[i][column] === "Y") {
+      if (taulell[i][columna] === "X" || taulell[i][columna] === "Y") {
         fila = i + 1;
         if (fila >= taulell.length) {
           fila = taulell.length;
@@ -102,17 +102,41 @@ window.addEventListener("load", () => {
         }
       } else if (
         i === 0 &&
-        (taulell[i][column] !== "X" || taulell[i][column] !== "Y")
+        (taulell[i][columna] !== "X" || taulell[i][column] !== "Y")
       ) {
         fila = 0;
       }
     }
     return fila;
   }
+
+  function comprovarColumnaCorrecte(forat, taulell, player, objJugador) {
+    column = getColumn(taulell, forat);
+    fila = getFila(taulell, column);
+
+    for (let i = fila; i < taulell.length; i++) {
+      if (
+        i === 0 ||
+        (taulell[i][column] !== "X" && taulell[i][column] !== "Y")
+      ) {
+        document.getElementById(taulell[fila][column]).style.backgroundColor =
+          player.style;
+        taulell[i][column] = chooseSheetPlayer(player, objJugador);
+      } else if (
+        taulell[fila][column] === "X" ||
+        taulell[fila][column] === "Y"
+      ) {
+        document.getElementById(taulell[fila][column]).style.backgroundColor =
+          player.style;
+        taulell[fila][column] = chooseSheetPlayer(player, objJugador);
+      }
+      return true;
+    }
+  }
   function playNewTurnCPU(taulell, jugador, objJugador) {
-    hole.forEach((hole) => {
-      hole.addEventListener("click", () => {
-        foratOnFasClick = parseInt(hole.getAttribute("value"));
+    hole.forEach((holes) => {
+      holes.addEventListener("click", () => {
+        foratOnFasClick = parseInt(holes.getAttribute("value"), 10);
         const columnOk = comprovarColumnaCorrecte(
           foratOnFasClick,
           taulell,
@@ -134,6 +158,7 @@ window.addEventListener("load", () => {
       });
     });
   }
+
   function comprovar4enLinia(taulell, player, objJugador, row) {
     let count = 0;
     if (player === objJugador[0]) {
@@ -163,31 +188,9 @@ window.addEventListener("load", () => {
       return false;
     }
   }
-
-  function comprovar4enDiagonal(taulell, player, objJugador, row, column) {
-    const diagonal1 = comprovar4enDiagonal1(
-      taulell,
-      player,
-      objJugador,
-      row,
-      column
-    );
-    const diagonal2 = comprovar4enDiagonal2(
-      taulell,
-      player,
-      objJugador,
-      row,
-      column
-    );
-    if (diagonal1 || diagonal2) {
-      return true;
-    }
-    return false;
-  }
-
   function comprovar4enDiagonal1(taulell, player, objJugador, row, column) {
     countD = 0;
-    let i = row - row;
+    let i = 0;
     const j = column - row;
     if (i < 0 || j < 0) {
       return false;
@@ -220,11 +223,12 @@ window.addEventListener("load", () => {
       }
       return false;
     }
+    return true;
   }
 
   function comprovar4enDiagonal2(taulell, player, objJugador, row, column) {
     let count = 0;
-    let i = row - row;
+    let i = 0;
     const j = column + row;
 
     if (i < 0 || j < 0) {
@@ -258,37 +262,35 @@ window.addEventListener("load", () => {
       }
       return false;
     }
+    return true;
   }
 
-  function comprovarColumnaCorrecte(forat, taulell, player, objJugador) {
-    column = getColumn(taulell, forat);
-    fila = getFila(taulell, column);
-
-    for (let i = fila; i < taulell.length; i++) {
-      if (
-        i === 0 ||
-        (taulell[i][column] !== "X" && taulell[i][column] !== "Y")
-      ) {
-        document.getElementById(taulell[fila][column]).style.backgroundColor =
-          player.style;
-        taulell[i][column] = chooseSheetPlayer(player, objJugador);
-      } else if (
-        taulell[fila][column] === "X" ||
-        taulell[fila][column] === "Y"
-      ) {
-        document.getElementById(taulell[fila][column]).style.backgroundColor =
-          player.style;
-        taulell[fila][column] = chooseSheetPlayer(player, objJugador);
-      }
+  function comprovar4enDiagonal(taulell, player, objJugador, row, column) {
+    const diagonal1 = comprovar4enDiagonal1(
+      taulell,
+      player,
+      objJugador,
+      row,
+      column
+    );
+    const diagonal2 = comprovar4enDiagonal2(
+      taulell,
+      player,
+      objJugador,
+      row,
+      column
+    );
+    if (diagonal1 || diagonal2) {
       return true;
     }
+    return false;
   }
-  function checkLinia(taulell, player, objJugador, row, column) {
+  function checkLinia(taulell, player, objJugador, row, columna) {
     const connectaColumn = comprovar4enColumna(
       taulell,
       player,
       objJugador,
-      column
+      columna
     );
     const connectaFila = comprovar4enLinia(taulell, player, objJugador, row);
     const connectaDiagonal = comprovar4enDiagonal(
@@ -296,7 +298,7 @@ window.addEventListener("load", () => {
       player,
       objJugador,
       row,
-      column
+      columna
     );
 
     if (connectaFila || connectaColumn || connectaDiagonal) {
@@ -308,7 +310,7 @@ window.addEventListener("load", () => {
   function clickHole(taulell, jugador, objJugador) {
     hole.forEach((holes) => {
       holes.addEventListener("click", () => {
-        foratOnFasClick = parseInt(hole.getAttribute("value"));
+        foratOnFasClick = parseInt(hole.getAttribute("value"), 10);
         const columnOk = comprovarColumnaCorrecte(
           foratOnFasClick,
           taulell,
@@ -324,7 +326,7 @@ window.addEventListener("load", () => {
               Window.alert(`${objJugador[1]} you win`);
             }
           } else {
-            jugador = changePlayer(jugador, objJugador);
+            const jugador = changePlayer(jugador, objJugador);
             // shadowSheet(taulell,jugador,objJugador)
           }
         }
@@ -337,67 +339,36 @@ window.addEventListener("load", () => {
   }
 
   play.addEventListener("click", () => {
-    currentPlayer = players[0];
+    const currentPlayer = players[0];
     playNewTurn(filesTaulell, currentPlayer, players);
   });
 
   cpu.addEventListener("click", () => {
-    currentPlayer = playerCPU[0];
+    const currentPlayer = playerCPU[0];
     playNewTurnCPU(filesTaulell, currentPlayer, playerCPU);
   });
 
-  // las funciones para acabar el juego no funcionan al 100%
-  /*  end.addEventListener('click', () => {
-         alert('End Game')
-         endGame()
- 
-     })
-      */
-  /* function endGame() {
-        filesTaulell = [[36, 37, 38, 39, 40, 41, 42], [29, 30, 31, 32, 33, 34, 35], [22, 23, 24, 25, 26, 27, 28], [15, 16, 17, 18, 19, 20, 21], [8, 9, 10, 11, 12, 13, 14], [1, 2, 3, 4, 5, 6, 7]]
-        for (let i = 0; i < filesTaulell.length; i++) {
-            for (let j = 0; j < filesTaulell[i].length; j++) {
-                document.getElementById(filesTaulell[i][j]).style.backgroundColor = 'rgb(247, 248, 237)';
-                alert('If you want play again click an option')
-            }
+  function playCPU(taulell, jugador, objJugador) {
+    if ((jugador = objJugador[0])) {
+      jugador = objJugador[1];
+    }
+    const columnaCPUOk = columnaOKCPU(taulell);
+    if (columnaCPUOk) {
+      linia = checkLinia(taulell, jugador, objJugador, fila, column);
+      if (linia) {
+        if (objJugador[0]) {
+          Window.alert(`${objJugador[0]} you win`);
+        } else {
+          Window.alert(`CPU wins`);
         }
-
-    } */
-
-  // Aqui intento hacer que se marque la donde puede caer la ficha (tipo hover)
-
-  /* function shadowSheet(taulell, jugador, objJugador) {
-        hole.forEach(hole => {
-            hole.addEventListener('mouseover', () => {
-                let possibleForat = parseInt(hole.getAttribute('value'));
-                onCauralaFitxa(possibleForat, taulell, jugador)
-            })
-
-        })
-    } */
-
-  /*  function onCauralaFitxa(forat, taulell, player) {
-         column = getColumn(taulell, forat)
-         fila = getFila(taulell, column)
-         for (let i = fila; i < taulell.length; i++) {
-             if (i === 0 || (taulell[i][column] !== "X" && taulell[i][column] !== "Y")) {
-                 document.getElementById(taulell[i][column]).style.backgroundColor = player.style;
-                 document.getElementById(taulell[i][column-1]).style.backgroundColor = 'rgb(247, 248, 237)';
-                 document.getElementById(taulell[i][column+1]).style.backgroundColor = 'rgb(247, 248, 237)';
-                 document.getElementById(taulell[i-1][column]).style.backgroundColor = 'rgb(247, 248, 237)';
-             } else if (taulell[fila][column] === "X" || taulell[fila][column] === "Y") {
-                 document.getElementById(taulell[fila][column]).style.backgroundColor = player.style;
-                 document.getElementById(taulell[fila][column-1]).style.backgroundColor = 'rgb(247, 248, 237)';
-                 document.getElementById(taulell[fila][column+1]).style.backgroundColor = 'rgb(247, 248, 237)';
-             }
-            
-         }
-     } */
+      }
+    }
+  }
 
   function playNewTurnCPU(taulell, jugador, objJugador) {
     hole.forEach((hole) => {
       hole.addEventListener("click", () => {
-        foratOnFasClick = parseInt(hole.getAttribute("value"));
+        foratOnFasClick = parseInt(hole.getAttribute("value"), 10);
         const columnOk = comprovarColumnaCorrecte(
           foratOnFasClick,
           taulell,
@@ -418,23 +389,6 @@ window.addEventListener("load", () => {
         }
       });
     });
-  }
-
-  function playCPU(taulell, jugador, objJugador) {
-    if ((jugador = objJugador[0])) {
-      jugador = objJugador[1];
-    }
-    const columnaCPUOk = columnaOKCPU(taulell);
-    if (columnaCPUOk) {
-      linia = checkLinia(taulell, jugador, objJugador, fila, column);
-      if (linia) {
-        if (objJugador[0]) {
-          Window.alert(`${objJugador[0]} you win`);
-        } else {
-          Window.alert(`CPU wins`);
-        }
-      }
-    }
   }
 
   function columnaOKCPU(taulell) {
