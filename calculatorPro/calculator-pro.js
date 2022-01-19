@@ -44,9 +44,9 @@ function calculator() {
   const arrayInputUser = [];
 
   do {
-    inputUser = prompt("Enter a number or press cancel to stop.");
+    inputUser = Window.prompt("Enter a number or press cancel to stop.");
     if (!isNumber(inputUser) || inputUser === "" || inputUser === " ") {
-      alert("Your imput is NOT a number");
+      Window.alert("Your imput is NOT a number");
     } else if (inputUser !== null) {
       arrayInputUser.push(parseFloat(inputUser));
     }
@@ -74,5 +74,5 @@ function calculator() {
 function calculatorPro() {
   do {
     calculator();
-  } while (confirm("New numbers?"));
+  } while (Window.confirm("New numbers?"));
 }
