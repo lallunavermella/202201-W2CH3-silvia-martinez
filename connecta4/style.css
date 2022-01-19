@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  color: black;
+  display: flex;
+  justify-content: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  align-content: center;
+  flex-wrap: nowrap;
+  background-color: rgb(247, 248, 237);
+}
+header {
+  border: 2px dotted violet;
+  display: flex;
+  justify-content: center;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer {
+  border: 2px dotted violet;
+  display: flex;
+  justify-content: center;
+}
+
+.tablero {
+  margin: 10px;
+  text-align: center;
+  background-color: #7db5e9;
+  color: blueviolet;
+  padding: 2%;
+  border: 2px blue solid;
+  border-radius: 10px;
+  height: 500px;
+  width: 800px;
+  display: grid;
+  grid-template-columns: repeat(7 1fr);
+  grid-template-rows: repeat(6 1fr);
+}
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.hole {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 70px;
+  width: 70px;
+  border: 2px solid #2e2ba8;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: -7px 2px 13px -11px #000000;
+  background-color: rgb(247, 248, 237);
+}
+/* .hole:hover{
+  background-color: grey;
+} */
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-content: space-around;
+}
+.btn {
+  margin: 20px;
+  background-color: violet;
+  border: 4px dotted red;
+  font-size: 14px;
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+}
+.btn:hover{
+  background-color: white;
+}
