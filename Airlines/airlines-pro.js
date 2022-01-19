@@ -1,90 +1,21 @@
-let flights = [
-  { id: 00, to: "Bilbao", from: "Barcelona", cost: 1600, scale: false },
-  { id: 01, to: "New York", from: "Barcelona", cost: 700, scale: false },
-  { id: 02, to: "Los Angeles", from: "Madrid", cost: 1100, scale: true },
-  { id: 03, to: "Paris", from: "Barcelona", cost: 210, scale: false },
-  { id: 04, to: "Roma", from: "Barcelona", cost: 150, scale: false },
-  { id: 05, to: "London", from: "Madrid", cost: 200, scale: false },
-  { id: 06, to: "Madrid", from: "Barcelona", cost: 90, scale: false },
-  { id: 07, to: "Tokyo", from: "Madrid", cost: 1500, scale: true },
-  { id: 08, to: "Shangai", from: "Barcelona", cost: 800, scale: true },
-  { id: 09, to: "Sydney", from: "Barcelona", cost: 150, scale: true },
-  { id: 10, to: "Tel-Aviv", from: "Madrid", cost: 150, scale: false },
+const flights = [
+  { id: 1, to: "Bilbao", from: "Barcelona", cost: 1600, scale: false },
+  { id: 2, to: "New York", from: "Barcelona", cost: 700, scale: false },
+  { id: 3, to: "Los Angeles", from: "Madrid", cost: 1100, scale: true },
+  { id: 4, to: "Paris", from: "Barcelona", cost: 210, scale: false },
+  { id: 5, to: "Roma", from: "Barcelona", cost: 150, scale: false },
+  { id: 6, to: "London", from: "Madrid", cost: 200, scale: false },
+  { id: 7, to: "Madrid", from: "Barcelona", cost: 90, scale: false },
+  { id: 8, to: "Tokyo", from: "Madrid", cost: 1500, scale: true },
+  { id: 9, to: "Shangai", from: "Barcelona", cost: 800, scale: true },
+  { id: 10, to: "Sydney", from: "Barcelona", cost: 150, scale: true },
+  { id: 11, to: "Tel-Aviv", from: "Madrid", cost: 150, scale: false },
 ];
-
-let userName;
-
-function airlinesPro() {
-  airlines(flights);
-  let typeOfUser = prompt("Are you a ADMIN or an USER?");
-  if (typeOfUser === null || typeOfUser === "") {
-    console.log("Good bye");
-    return;
-  }
-
-  typeOfUser = typeOfUser.toLowerCase();
-  switch (typeOfUser) {
-    case "admin":
-      adminTask(flights);
-      break;
-    case "user":
-      user(flights);
-      break;
-    default:
-      airlinesPro();
-      break;
-  }
-}
-
-function airlines(arrayFlights) {
-  arrayFlights.sort((a, b) => a.id - b.id);
-  userName = prompt("Welcome, what's your name?");
-
-  if (userName === null) {
-    console.log("Good bye!");
-    return;
-  }
-
-  userName = upperCaseFirstLetter(userName);
-  console.log(
-    `Wellcome ${userName}, for today SkyLab <ISDI> airlines have the next fligths:`
-  );
-
-  let flightsScale = [];
-
-  for (let i = 0; i < flights.length; i++) {
-    if (flights[i].scale === true) {
-      flights[i].scale = "yes";
-      stopOver = "has stopover";
-    } else if (flights[i].scale === false) {
-      flights[i].scale = "no";
-      stopOver = "hasn't stopover";
-    }
-    if (flights[i].scale === "yes") {
-      flightsScale.push(arrayFlights[i].scale);
-    }
-    console.log(
-      `\t fligth ${arrayFlights[i].id} from ${arrayFlights[i].from} to ${arrayFlights[i].to}, it cost ${arrayFlights[i].cost} € and ${stopOver}.`
-    );
-  }
-
-  let costMedium = costMediumFligths(flights);
-  console.log(`the average cost of our flights is ${costMedium}€. `);
-
-  console.log(`There are ${flightsScale.length} stopover fligths`);
-
-  let lastDestination = [];
-  for (let i = arrayFlights.length - 5; i < arrayFlights.length; i++) {
-    lastDestination.push(arrayFlights[i].to);
-  }
-  console.log(
-    `The latest destinations for SkyLab <ISDI> airlines flights are: ${lastDestination}`
-  );
-}
 
 function upperCaseFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
+let userName;
 
 function costMediumFligths(flightArray) {
   let sumatori = 0;
@@ -94,31 +25,15 @@ function costMediumFligths(flightArray) {
   }
   return (sumatori / flightArray.length).toFixed(2);
 }
-
-function adminTask(arrayFlights) {
-  let adminJob = prompt("Do you want to CREATE new fligts or DELETE fligths?");
-  if (adminJob === null) {
-    console.log(`Good Bye! ${userName}`);
-    return;
-  }
-  adminJob = adminJob.toUpperCase();
-  if (adminJob === "CREATE") {
-    adminCreateFligth(arrayFlights);
-  } else if (adminJob === "DELETE") {
-    adminDeleteFligth(arrayFlights);
-  }
-}
-
 function createNewId(arrayFligths) {
-  newFlightId = prompt("Create a new ID");
+  let newFlightId = Window.prompt("Create a new ID");
   if (newFlightId === null) {
-    alert("This imput is not valid");
+    Window.alert("This imput is not valid");
     return;
   }
-
   newFlightId = parseInt(newFlightId);
   if (!isNumber(newFlightId) || newFlightId === "" || newFlightId === " ") {
-    alert("This ID is invalid");
+    Window.alert("This ID is invalid");
   } else if (newFlightId) {
     for (let i = 0; i < arrayFligths.length; i++) {
       if (newFlightId === arrayFligths[i].id) {
@@ -129,15 +44,14 @@ function createNewId(arrayFligths) {
   }
   return newFlightId;
 }
-
 function createNewFlightTo() {
-  newFlightTo = prompt("Flight to:");
+  let newFlightTo = prompt("Flight to:");
   if (newFlightTo === null) {
     alert("This imput is not valid");
     return;
   }
   if (isNumber(newFlightTo) || newFlightTo === "" || newFlightTo === " ") {
-    alert("This imput is not valid");
+    Window.alert("This imput is not valid");
     return;
   }
   newFlightTo = upperCaseFirstLetter(newFlightTo);
@@ -145,10 +59,10 @@ function createNewFlightTo() {
 }
 
 function createNewFlightFrom() {
-  newFlightFrom = prompt("Fligth from:");
+  let newFlightFrom = prompt("Fligth from:");
 
   if (newFlightFrom === null) {
-    alert("This imput is not valid");
+    Window.alert("This imput is not valid");
     return;
   }
   if (
@@ -156,17 +70,16 @@ function createNewFlightFrom() {
     newFlightFrom === "" ||
     newFlightFrom === " "
   ) {
-    alert("This imput is not valid");
+    Window.alert("This imput is not valid");
     return;
   }
   newFlightFrom = upperCaseFirstLetter(newFlightFrom);
   return newFlightFrom;
 }
-
 function createNewFlightCost() {
-  newFlightCost = prompt("This flight cost:");
+  let newFlightCost = Window.prompt("This flight cost:");
   if (newFlightCost === null) {
-    alert("This imput is not valid");
+    Window.alert("This imput is not valid");
     return;
   }
 
@@ -178,15 +91,15 @@ function createNewFlightCost() {
     newFlightCost === " " ||
     Math.sign(newFlightCost) === -1
   ) {
-    alert("This cost is not valid");
+    Window.alert("This cost is not valid");
     return;
   }
   return newFlightCost;
 }
 function createNewFlightScale() {
-  newFlightScale = prompt("The new fligth has stopovers? ");
+  let newFlightScale = Window.prompt("The new fligth has stopovers? ");
   if (newFlightScale === null) {
-    alert("This imput is not valid");
+    Window.alert("This imput is not valid");
     return;
   }
 
@@ -216,79 +129,141 @@ function createNewFlightScale() {
 
 function adminCreateFligth(arrayFlights) {
   do {
-    let id = createNewId(arrayFlights);
+    const id = createNewId(arrayFlights);
     if (!id) {
       continue;
     }
-    let to = createNewFlightTo();
+    const to = createNewFlightTo();
     if (!to) {
       continue;
     }
-    let from = createNewFlightFrom();
+    const from = createNewFlightFrom();
     if (!from) {
       continue;
     }
-    let cost = createNewFlightCost();
+    const cost = createNewFlightCost();
     if (!cost) {
       continue;
     }
-    let scale = createNewFlightScale();
+    const scale = createNewFlightScale();
     if (!scale) {
       continue;
     }
 
-    arrayFlights.push({ id: id, to: to, from: from, cost: cost, scale: scale });
+    arrayFlights.push({ id, to, from, cost, scale });
   } while (
     arrayFlights.length < 15 &&
-    confirm("Do you want to create a new fligth?")
+    Window.confirm("Do you want to create a new fligth?")
   );
 
   console.table(arrayFlights.sort((a, b) => a.id - b.id));
 }
 
+function airlines(arrayFlights) {
+  let stopOver;
+  arrayFlights.sort((a, b) => a.id - b.id);
+  userName = Window.prompt("Welcome, what's your name?");
+
+  if (userName === null) {
+    console.log("Good bye!");
+    return;
+  }
+
+  userName = upperCaseFirstLetter(userName);
+  console.log(
+    `Wellcome ${userName}, for today SkyLab <ISDI> airlines have the next fligths:`
+  );
+
+  const flightsScale = [];
+
+  for (let i = 0; i < flights.length; i++) {
+    if (flights[i].scale === true) {
+      flights[i].scale = "yes";
+      stopOver = "has stopover";
+    } else if (flights[i].scale === false) {
+      flights[i].scale = "no";
+      stopOver = "hasn't stopover";
+    }
+    if (flights[i].scale === "yes") {
+      flightsScale.push(arrayFlights[i].scale);
+    }
+    console.log(
+      `\t fligth ${arrayFlights[i].id} from ${arrayFlights[i].from} to ${arrayFlights[i].to}, it cost ${arrayFlights[i].cost} € and ${stopOver}.`
+    );
+  }
+
+  const costMedium = costMediumFligths(flights);
+  console.log(`the average cost of our flights is ${costMedium}€. `);
+
+  console.log(`There are ${flightsScale.length} stopover fligths`);
+
+  const lastDestination = [];
+  for (let i = arrayFlights.length - 5; i < arrayFlights.length; i++) {
+    lastDestination.push(arrayFlights[i].to);
+  }
+  console.log(
+    `The latest destinations for SkyLab <ISDI> airlines flights are: ${lastDestination}`
+  );
+}
 function adminDeleteFligth(arrayFlights) {
   console.table(arrayFlights);
   do {
-    let flightToDelete = parseInt(prompt("ID to delete"));
+    const flightToDelete = parseInt(Window.prompt("ID to delete"),10);
     if (
       !isNumber(flightToDelete) ||
       flightToDelete === "" ||
       flightToDelete === " "
     ) {
-      alert("This ID is invalid");
+      Window.alert("This ID is invalid");
       return;
-    } else {
-      for (let i = 0; i < arrayFlights.length; i++) {
-        if (arrayFlights[i].id === flightToDelete) {
-          alert(
-            `${userName} you delete the flight: ${arrayFlights[i].id},from: ${arrayFlights[i].from}, to: ${arrayFlights[i].to}`
-          );
-          arrayFlights.splice(i, 1);
-        }
+    }
+    for (let i = 0; i < arrayFlights.length; i++) {
+      if (arrayFlights[i].id === flightToDelete) {
+        Window.alert(
+          `${userName} you delete the flight: ${arrayFlights[i].id},from: ${arrayFlights[i].from}, to: ${arrayFlights[i].to}`
+        );
+        arrayFlights.splice(i, 1);
       }
     }
   } while (
     arrayFlights.length !== 0 &&
-    confirm("Do you want to delete another flight?")
+    Window.confirm("Do you want to delete another flight?")
   );
   console.table(arrayFlights.sort((a, b) => a.id - b.id));
 }
 
+function adminTask(arrayFlights) {
+  let adminJob = Window.prompt(
+    "Do you want to CREATE new fligts or DELETE fligths?"
+  );
+  if (adminJob === null) {
+    console.log(`Good Bye! ${userName}`);
+    return;
+  }
+  adminJob = adminJob.toUpperCase();
+  if (adminJob === "CREATE") {
+    adminCreateFligth(arrayFlights);
+  } else if (adminJob === "DELETE") {
+    adminDeleteFligth(arrayFlights);
+  }
+}
+
 function user(arrayFlights) {
-  let searchCost = prompt(
+  const searchCost = Window.prompt(
     "Search Fligth Cost. A - more expensive, B - cheaper or C - equal to"
   );
   let idSelectet;
-  let listFlight = [];
+  const listFlight = [];
   if (searchCost === null) {
     console.log("Good bye!");
     return;
   }
   searchCost.toLowerCase();
+  const expCost
   if (searchCost === "a" || searchCost === "b" || searchCost === "c") {
     switch (searchCost) {
       case "a":
-        let expCost = parseInt(prompt("More expensive than:"));
+        expCost = parseInt(prompt("More expensive than:"));
         for (let i = 0; i < arrayFlights.length; i++) {
           if (expCost < arrayFlights[i].cost) {
             listFlight.push(arrayFlights[i]);
@@ -308,7 +283,7 @@ function user(arrayFlights) {
         break;
 
       case "b":
-        let cheapCost = parseInt(prompt("Cheaper than:"));
+        const cheapCost = parseInt(prompt("Cheaper than:"));
         for (let i = 0; i < arrayFlights.length; i++) {
           if (cheapCost > arrayFlights[i].cost) {
             listFlight.push(arrayFlights[i]);
@@ -328,7 +303,7 @@ function user(arrayFlights) {
         break;
 
       case "c":
-        let equalCost = parseInt(prompt("Equal to?"));
+        const equalCost = parseInt(prompt("Equal to?"));
         for (let i = 0; i < arrayFlights.length; i++) {
           if (equalCost === arrayFlights[i].cost) {
             listFlight.push(arrayFlights[i]);
@@ -356,6 +331,27 @@ function user(arrayFlights) {
 }
 
 function isNumber(inputText) {
-  let isNumber = !isNaN(Number(inputText));
-  return isNumber;
+  const isNumbers = !Number.isNaN(Number(inputText));
+  return isNumbers;
+}
+function airlinesPro() {
+  airlines(flights);
+  let typeOfUser = Window.prompt("Are you a ADMIN or an USER?");
+  if (typeOfUser === null || typeOfUser === "") {
+    console.log("Good bye");
+    return;
+  }
+
+  typeOfUser = typeOfUser.toLowerCase();
+  switch (typeOfUser) {
+    case "admin":
+      adminTask(flights);
+      break;
+    case "user":
+      user(flights);
+      break;
+    default:
+      airlinesPro();
+      break;
+  }
 }
